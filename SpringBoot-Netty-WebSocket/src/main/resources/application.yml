@@ -5,7 +5,12 @@ netty:
   port: 8083
 
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/
-      suffix: .jsp
+  thymeleaf:
+    prefix: classpath:/template/
+    suffix: .jsp
+
+
+
+
+
+

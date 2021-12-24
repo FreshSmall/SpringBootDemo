@@ -25,7 +25,7 @@ public class MsgUtil {
         proto.setType(2);
         proto.setMsgInfo(msgInfo);
         proto.setChannelId(channelId);
-        proto.setChannelId("head" + i + ".jpg");
+        proto.setUserHeadImg("head" + i + ".jpg");
         return new TextWebSocketFrame(JSONUtil.toJsonStr(proto));
     }
 

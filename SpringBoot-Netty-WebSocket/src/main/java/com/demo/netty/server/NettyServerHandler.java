@@ -82,12 +82,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             WebSocketFrame webSocketFrame = (WebSocketFrame) msg;
             // 关闭请求
             if (webSocketFrame instanceof CloseWebSocketFrame) {
-
+                socketHandshaker.close(ctx.channel(), (CloseWebSocketFrame) webSocketFrame.retain());
+                return;
             }
 
             // ping 请求
             if (webSocketFrame instanceof PingWebSocketFrame) {
-
+                ctx.channel().write(new PongWebSocketFrame(webSocketFrame.content().retain()));
+                return;
             }
 
             // 只支持文本格式，不支持二进制消息

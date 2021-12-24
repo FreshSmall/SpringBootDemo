@@ -6,9 +6,9 @@
 
 package com.demo.netty.web;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author yinchao
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @team wuhan operational dev.
  * @date 2021/12/23 19:22
  **/
-@RestController
+@Controller
 public class NettyController {
 
     @RequestMapping("/index")
