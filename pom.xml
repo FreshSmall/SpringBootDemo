@@ -9,6 +9,7 @@
         <module>SpringBoot-Features</module>
         <module>SpringBoot-Netty</module>
         <module>SpringBoot-Netty-WebSocket</module>
+        <module>SpringBoot-Netty-Elasticsearch</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -59,6 +60,31 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--netty配置-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.36.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>1.0.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
