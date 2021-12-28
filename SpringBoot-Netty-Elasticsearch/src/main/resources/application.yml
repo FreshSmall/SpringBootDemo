@@ -6,3 +6,5 @@ spring:
       uris: http://localhost:9200
       connection-timeout: 1000
       read-timeout: 1000
+netty:
+  port: 8085

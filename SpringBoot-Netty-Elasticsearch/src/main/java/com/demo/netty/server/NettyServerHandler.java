@@ -6,9 +6,17 @@
 
 package com.demo.netty.server;
 
+import cn.hutool.json.JSONUtil;
+import com.demo.netty.dto.TransportProtocol;
+import com.demo.netty.dto.User;
+import com.demo.netty.service.UserService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author yinchao
@@ -16,8 +24,13 @@ import io.netty.channel.socket.SocketChannel;
  * @team wuhan operational dev.
  * @date 2021/12/23 17:35
  **/
+@Service
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
+    private Logger logger = LoggerFactory.getLogger(NettyServerHandler.class);
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -32,11 +45,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("接收到客户端发送的消息：" + JSONUtil.toJsonStr(msg));
+        TransportProtocol protocol = (TransportProtocol) msg;
+        userService.save((User) protocol.getObj());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        System.out.println(cause.getMessage());
+        logger.info("异常信息：" + cause.getLocalizedMessage(), cause);
     }
 }

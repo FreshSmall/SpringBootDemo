@@ -6,13 +6,15 @@
 
 package com.demo.netty.server;
 
+import com.demo.netty.codec.ObjDecoder;
+import com.demo.netty.codec.ObjEncoder;
+import com.demo.netty.dto.TransportProtocol;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.stream.ChunkedWriteHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +31,9 @@ public class NettyServer {
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private Channel channel;
 
+    @Autowired
+    private NettyServerHandler nettyServerHandler;
+
     public ChannelFuture bind(int port) {
         ServerBootstrap b = new ServerBootstrap();
         ChannelFuture f = null;
@@ -39,10 +44,9 @@ public class NettyServer {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         System.out.println(Thread.currentThread().getName() + ",服务器初始化通道.....");
-                        socketChannel.pipeline().addLast("http-codec", new HttpServerCodec());
-                        socketChannel.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
-                        socketChannel.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
-                        socketChannel.pipeline().addLast(new NettyServerHandler());
+                        socketChannel.pipeline().addLast(new ObjDecoder(TransportProtocol.class));
+                        socketChannel.pipeline().addLast(new ObjEncoder(TransportProtocol.class));
+                        socketChannel.pipeline().addLast(nettyServerHandler);
                     }
                 });
 
